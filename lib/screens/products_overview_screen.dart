@@ -48,12 +48,62 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     super.didChangeDependencies();
   }
 
+  void _openBottomModal(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            height: MediaQuery.of(context).size.height * .60,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text('Modal test'),
+                      Spacer(),
+                      IconButton(
+                        icon: Icon(
+                          Icons.cancel,
+                          color: Colors.purple,
+                          size: 25,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Shop App With Everything",
+                        style: TextStyle(fontSize: 30, color: Colors.green[900]),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('MyShop'),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              _openBottomModal(context);
+            },
+          ),
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
@@ -68,21 +118,21 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               Icons.more_vert,
             ),
             itemBuilder: (_) => [
-                  PopupMenuItem(
-                    child: Text('Only Favorites'),
-                    value: FilterOptions.Favorites,
-                  ),
-                  PopupMenuItem(
-                    child: Text('Show All'),
-                    value: FilterOptions.All,
-                  ),
-                ],
+              PopupMenuItem(
+                child: Text('Only Favorites'),
+                value: FilterOptions.Favorites,
+              ),
+              PopupMenuItem(
+                child: Text('Show All'),
+                value: FilterOptions.All,
+              ),
+            ],
           ),
           Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
-                  child: ch,
-                  value: cart.itemCount.toString(),
-                ),
+              child: ch,
+              value: cart.itemCount.toString(),
+            ),
             child: IconButton(
               icon: Icon(
                 Icons.shopping_cart,
